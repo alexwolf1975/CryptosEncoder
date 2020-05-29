@@ -28,7 +28,8 @@ DEF
 ```
 ```0X1234567890ABCD
 EF01234567890ABC
-DEF```
+DEF
+```
 
 Encryption from source to encrypted output file.
 
