@@ -16,17 +16,20 @@ The cipher file must contain one line of cipher in decimal or hexadecimal. For e
 
 It is possible use multiline cipher notation. For example.
 
-```12345678
+```
+12345678
 90123456
 78901234
 56789012
 34567890
 ```
-```0x1234567890ABCD
+```
+0x1234567890ABCD
 EF01234567890ABC
 DEF
 ```
-```0X1234567890ABCD
+```
+0X1234567890ABCD
 EF01234567890ABC
 DEF
 ```
