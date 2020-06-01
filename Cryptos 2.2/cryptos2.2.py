@@ -33,14 +33,29 @@ def nearest_prime(s):
         z *= z
 
     z %= ch
-    composite = True
+    composite, k = True, 0
+    print('Prime multiplier generation')
     while composite:
+        k += 1
+        print(f'Checking multiplier #{k}')
         for p in primes:
             if z % p == 0:
                 z += 1
                 break
         else:
             composite = False
+
+        if not composite:
+            composite = True
+            for p in primes:
+                if pow(p, z - 1, z) != 1:
+                    z += 1
+                    break
+            else:
+                composite = False
+
+        if not composite:
+            print('Simple multiplier found!')
 
     return z
 
@@ -72,6 +87,7 @@ def shuffle(s, sc=None):
 
     if sc == None:
         sc = s
+
     sum_sc = sum(sc)
     salt = (len(sc) << sum_sc.bit_length()) + sum_sc
     z = (salt << 8) + reduce(lambda x, y: x ^ y, sc)
@@ -123,6 +139,7 @@ while i * i <= n:
         for j in range(i * i, n + 1, i):
             if j % 2 > 0:
                 primes[j // 2] = 0
+
     i += 2
 
 primes[0] = 2
@@ -132,9 +149,10 @@ primes = list(filter(lambda x: x > 0, primes))
 ## Common part
 
 with open(args.cipher) as f:
-    ch = eval(''.join(map(lambda s: s.strip(), f.readlines())))
+    ch = int(''.join(map(lambda s: s.strip(), f.readlines())), 0)
 
 key_len = max((ch.bit_length() - 1) // 8 + 2, 4)
+
 ## Encription
 
 if args.encryption:
@@ -160,6 +178,8 @@ if args.encryption:
         f.write(f'{base}\n')
         f.writelines('\n'.join(s[i:i + 64] for i in range(0, len(s), 64)))
 
+    print('Completed!')
+
 ## Decription
 
 elif args.decryption:
@@ -179,3 +199,5 @@ elif args.decryption:
     s = list(map(lambda x, y: x ^ y, s, noise(s)))
     with open(args.output, 'wb') as f:
         f.write(bytes(s))
+
+    print('Completed!')
