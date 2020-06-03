@@ -47,8 +47,10 @@ def nearest_prime(s):
 
         if not composite:
             composite = True
-            for p in primes:
-                if pow(p, z - 1, z) != 1:
+            for kf in range(len(primes)):
+                if kf % 100 == 0:
+                    print(f'Ferma test is {kf // 100}% completed')
+                if pow(primes[kf], z - 1, z) != 1:
                     z += 1
                     break
             else:
@@ -127,9 +129,9 @@ parser.add_argument('-o', '--output', metavar='file', type=str, required=True, h
 
 args = parser.parse_args()
 
-## Get first 1000000 prime numbers
+## Get first 10000 prime numbers
 
-n = 15485863
+n = 104729
 
 primes = list(range(1, n + 1, 2))
 
