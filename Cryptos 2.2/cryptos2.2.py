@@ -91,8 +91,9 @@ def shuffle(s, sc=None):
         sc = s
 
     sum_sc = sum(sc)
-    salt = (len(sc) << sum_sc.bit_length()) + sum_sc
-    z = (salt << 8) + reduce(lambda x, y: x ^ y, sc)
+    salt = (((len(sc) << sum_sc.bit_length()) + sum_sc) << 8) + reduce(lambda x, y: x ^ y, sc)
+    mul_sc = reduce(lambda x, y: (x * y) % ch, filter(lambda x: x > 1, sc))
+    z = salt = (salt << mul_sc.bit_length()) + mul_sc
     while z < ch:
         z *= z
 
