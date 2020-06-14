@@ -49,7 +49,7 @@ DEF
 **-e, --encryption:** encryption action.  
 **-d, --decryption:** decryption action.  
 **-mpn, --mulprimenul:** permutation, noise, multiplication method. It is recommended for small volumes of information, approximately a few key lengths or little.  
-**-cns, --ciphersystem:** cipher numeral system method. It is recommended for small volumes of information, many times overhad the key length and more.  
+**-cns, --ciphersystem:** cipher numeral system method. It is recommended for large volumes of information, many times overhad the key length and more.  
 **-c file, --cipher file:** file with hipher key.  
 **-b16, --io_base16:** base16 input or output file. It it recommended for key generation option.  
 **-b64, --io_base64:** base64 input or output file.  
