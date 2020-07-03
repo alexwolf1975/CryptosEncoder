@@ -46,6 +46,13 @@ The text cipher file must contain any text. For example.
 
 `This is a chifer`
 
+Of course, it is possible use of multiline text.
+
+```
+This is a chifer,
+very long cipher
+text.
+```
 ## Options
 
 **-h, --help:** show help message and exit.  
@@ -56,7 +63,7 @@ The text cipher file must contain any text. For example.
 **-cnk, --chunked:** chunked system of encryption. It is recommended for encryption files over 100 kilobytes.  
 **-dig, --digital:** digital key.  
 **-txt, --text:** text key.  
-**-bin, --binary:** binary key.  
+**-bin, --binary:** binary key. It is recommended using of files up to 10 kilobytes.  
 **-c file, --cipher file:** file with cipher key.  
 **-b16, --io_base16:** base16 input or output file. It it recommended for key generation option.  
 **-b64, --io_base64:** base64 input or output file.  
