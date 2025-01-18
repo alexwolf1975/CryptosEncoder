@@ -31,6 +31,8 @@ def bits_few(key):
 
     return any([few_zeros, few_ones])
 
+def byte_length(x):
+    return (x.bit_length() + 7) // 8
 
 def get_salt(s):
     sum_s = sum(s)
@@ -176,7 +178,7 @@ if ch.bit_length() < 64:
 if bits_few(ch):
     exit('It is too weak key!')
 
-key_len = (ch.bit_length() + 7) // 8
+key_len = byte_length(ch)
 
 ## Encription
 
@@ -185,7 +187,8 @@ if args.encryption:
         s = list(f.read())
 
     s = tokenize(s)
-    s = list((int.from_bytes(s, 'big') // ch).to_bytes(len(s) - key_len + 1, 'big'))
+    s = int.from_bytes(s, 'big') // ch
+    s = list(s.to_bytes(byte_length(s), 'big'))
     noise(s)
     shuffle(s)
     s = bytes(s)
@@ -222,7 +225,8 @@ elif args.decryption:
 
     s = unshuffle(s)
     noise(s)
-    s = list((int.from_bytes(s, 'big') * ch).to_bytes(len(s) + key_len - 1, 'big'))
+    s = int.from_bytes(s, 'big') * ch
+    s = list(s.to_bytes(byte_length(s), 'big'))
     s = untokenize(s)
     with open(args.output, 'wb') as f:
         f.write(bytes(s))
