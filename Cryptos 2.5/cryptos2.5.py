@@ -143,6 +143,7 @@ def untokenize(s):
 
 parser = ArgumentParser(description='Encription or decryption file by specifed cipher.')
 parser.add_argument('-v', '--verification', action='store_true', help='Print more information')
+parser.add_argument('-s', '--silent', action='store_true', help='Silent mode')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('-e', "--encryption", action="store_true", help='Encryption file')
 group.add_argument('-d', "--decryption", action="store_true", help='Decryption file')
@@ -205,7 +206,8 @@ if args.encryption:
         with open(args.output, 'wb') as f:
             f.write(s)
 
-    print('Encryption completed!')
+    if not args.silent:
+        print('Encryption completed!')
 
 ## Decription
 
@@ -231,4 +233,5 @@ elif args.decryption:
     with open(args.output, 'wb') as f:
         f.write(bytes(s))
 
-    print('Decryption completed!')
+    if not args.silent:
+        print('Decryption completed!')
