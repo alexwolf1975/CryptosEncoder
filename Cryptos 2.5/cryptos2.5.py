@@ -2,6 +2,7 @@ from argparse import ArgumentParser
 from base64 import b16decode, b16encode, b64decode, b64encode
 from functools import reduce
 from secrets import token_bytes
+from sys import stdout
 
 
 def bits_few(key):
@@ -31,8 +32,10 @@ def bits_few(key):
 
     return any([few_zeros, few_ones])
 
+
 def byte_length(x):
     return (x.bit_length() + 7) // 8
+
 
 def get_salt(s):
     sum_s = sum(s)
@@ -157,7 +160,7 @@ group.add_argument('-b16', "--io_base16", action="store_true", help='base16 inpu
 group.add_argument('-b64', "--io_base64", action="store_true", help='base64 input or output file')
 group.add_argument('-b256', "--io_base256", action="store_true", help='Binary input or output file')
 parser.add_argument('-i', '--input', metavar='file', type=str, required=True, help='Input file')
-parser.add_argument('-o', '--output', metavar='file', type=str, required=True, help='Output file')
+parser.add_argument('-o', '--output', metavar='file', type=str, help='Output file. If omitted, then used stdout.')
 
 args = parser.parse_args()
 
@@ -199,12 +202,22 @@ if args.encryption:
         elif args.io_base64:
             s = b64encode(s).decode()
 
-        with open(args.output, 'w') as f:
-            f.writelines('\n'.join(s[i:i + 64] for i in range(0, len(s), 64)))
+        s = '\n'.join(s[i:i + 64] for i in range(0, len(s), 64))
+
+        if args.output:
+            with open(args.output, 'w') as f:
+                f.write(s)
+
+        else:
+            print(s, end='')
 
     elif args.io_base256:
-        with open(args.output, 'wb') as f:
-            f.write(s)
+        if args.output:
+            with open(args.output, 'wb') as f:
+                f.write(s)
+
+        else:
+            stdout.buffer.write(s)
 
     if not args.silent:
         print('Encryption completed!')
@@ -229,9 +242,13 @@ elif args.decryption:
     noise(s)
     s = int.from_bytes(s, 'big') * ch
     s = list(s.to_bytes(byte_length(s), 'big'))
-    s = untokenize(s)
-    with open(args.output, 'wb') as f:
-        f.write(bytes(s))
+    s = bytes(untokenize(s))
+    if args.output:
+        with open(args.output, 'wb') as f:
+            f.write(s)
+
+    else:
+        stdout.buffer.write(s)
 
     if not args.silent:
         print('Decryption completed!')
